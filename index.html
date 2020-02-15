@@ -9,10 +9,8 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background:red;
-    }
-    body{
-   
+      background: rgb(32,20,255);
+      background: linear-gradient(180deg, rgba(32,20,255,1) 0%, rgba(17,17,255,1) 35%, rgba(65,223,255,1) 100%);
     }
   </style>
 </head>
@@ -170,15 +168,8 @@ vUv = uv;
     fov = 30;
 
   window.addEventListener('load', function () {
-
-    // grab the container from the DOM
     container = document.getElementById("container");
-
-    // create a scene
     scene = new THREE.Scene();
-
-    // create a camera the size of the browser window
-    // and place it 100 units away, looking towards the center of the scene
     camera = new THREE.PerspectiveCamera(
       fov,
       window.innerWidth / window.innerHeight,
@@ -189,8 +180,8 @@ vUv = uv;
 
     // create a wireframe material
     material = new THREE.ShaderMaterial({
-     // wireframe: true,
-      transparent: true,
+      wireframe: true,
+     // transparent: true,
       uniforms: {
         time: { // float initialized to 0
           type: "f",
@@ -202,16 +193,14 @@ vUv = uv;
 
     });
 
-    // create a sphere and assign the material
     mesh = new THREE.Mesh(
-      //new THREE.IcosahedronGeometry( 20, 4 ),
-      new THREE.PlaneGeometry(100, 100, 100, 100),
+      new THREE.PlaneGeometry(200, 50, 200, 50),
       material
     );
     scene.add(mesh);
 
     // create the renderer and attach it to the DOM
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -239,10 +228,8 @@ vUv = uv;
 
   function render() {
     material.uniforms['time'].value = .00025 * (Date.now() - start);
-    // let there be light
     renderer.render(scene, camera);
     requestAnimationFrame(render);
-
   }
 </script>
 
