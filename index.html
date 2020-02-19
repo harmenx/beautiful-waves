@@ -9,8 +9,8 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: rgb(32,20,255);
-      background: linear-gradient(180deg, rgba(32,20,255,1) 0%, rgba(17,17,255,1) 35%, rgba(65,223,255,1) 100%);
+      background: rgb(32, 20, 255);
+      background: linear-gradient(180deg, rgba(32, 20, 255, 1) 0%, rgba(17, 17, 255, 1) 35%, rgba(65, 223, 255, 1) 100%);
     }
   </style>
 </head>
@@ -150,11 +150,16 @@ vUv = uv;
   </script>
 
 <script type="x-shader/x-vertex" id="fragmentShader">
-    varying vec2 vUv;
-    varying float noise;
+  uniform sampler2D tAlpha;
+  varying vec2 vUv;
+  
+  void main() {
+      vec4 tColor = texture2D(tAlpha, (vUv * 60.0));
+  
+      vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
+      gl_FragColor = vec4(mix(tColor.rgb, color.rgb, color.a),  tColor.a);
 
-    void main() {
-      gl_FragColor = vec4(1.0,1.0,1.0,0.1);
+
     }
   </script>
 
@@ -176,13 +181,21 @@ vUv = uv;
       1,
       10000
     );
-    camera.position.z = 100;
 
-    // create a wireframe material
+    camera.position.z = 100;
+    var alphaTexture = THREE.ImageUtils.loadTexture( 'alpha.png' );
+  //  alphaTexture.wrapS = THREE.RepeatWrapping;
+    alphaTexture.wrapT = THREE.RepeatWrapping;
+    //alphaTexture.repeat.x = 100;
+    alphaTexture.repeat.y = 1;
     material = new THREE.ShaderMaterial({
-      wireframe: true,
-     // transparent: true,
+      // wireframe: true,
+      transparent: true,
       uniforms: {
+        tAlpha: {
+          type: "t",
+          value: alphaTexture
+        },
         time: { // float initialized to 0
           type: "f",
           value: 0.0
@@ -194,12 +207,10 @@ vUv = uv;
     });
 
     mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(200, 50, 200, 50),
+      new THREE.PlaneGeometry(200, 50, 200, 100),
       material
     );
     scene.add(mesh);
-
-    // create the renderer and attach it to the DOM
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
