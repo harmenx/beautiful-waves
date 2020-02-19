@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>PS3 Waves</title>
+  <title>Beautiful Waves</title>
   <meta charset="utf-8">
   <style>
     * {
@@ -154,7 +154,7 @@ vUv = uv;
   varying vec2 vUv;
   
   void main() {
-      vec4 tColor = texture2D(tAlpha, (vUv * 60.0));
+      vec4 tColor = texture2D(tAlpha, (vUv * 10.0));
   
       vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
       gl_FragColor = vec4(mix(tColor.rgb, color.rgb, color.a),  tColor.a);

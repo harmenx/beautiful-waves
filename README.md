@@ -2,6 +2,7 @@
 
 To do 
 
-//Slow down
-//Add Transparency
-// get background showing
+// Slow down
+// Get Camera Angle Correct
+// Reduce Lines
+// Colors
