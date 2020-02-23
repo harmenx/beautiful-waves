@@ -2,7 +2,8 @@
 
 To do 
 
-// Slow down
+
 // Get Camera Angle Correct
+//Transparent at the back
 // Reduce Lines
 // Colors

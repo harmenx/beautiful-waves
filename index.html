@@ -9,9 +9,8 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: rgb(32, 20, 255);
-      background: linear-gradient(180deg, rgba(32, 20, 255, 1) 0%, rgba(17, 17, 255, 1) 35%, rgba(65, 223, 255, 1) 100%);
-    }
+      background: #000;
+      }
   </style>
 </head>
 
@@ -154,9 +153,9 @@ vUv = uv;
   varying vec2 vUv;
   
   void main() {
-      vec4 tColor = texture2D(tAlpha, (vUv * 10.0));
+      vec4 tColor = texture2D(tAlpha, (vUv * 80.0));
   
-      vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
+      vec4 color = vec4(0.0, 1.0, 1.0, 1.0);
       gl_FragColor = vec4(mix(tColor.rgb, color.rgb, color.a),  tColor.a);
 
 
@@ -182,15 +181,18 @@ vUv = uv;
       10000
     );
 
+  
+
     camera.position.z = 100;
     var alphaTexture = THREE.ImageUtils.loadTexture( 'alpha.png' );
   //  alphaTexture.wrapS = THREE.RepeatWrapping;
     alphaTexture.wrapT = THREE.RepeatWrapping;
     //alphaTexture.repeat.x = 100;
-    alphaTexture.repeat.y = 1;
+    alphaTexture.repeat.y = 100;
     material = new THREE.ShaderMaterial({
       // wireframe: true,
       transparent: true,
+      side: THREE.DoubleSide,
       uniforms: {
         tAlpha: {
           type: "t",
@@ -210,6 +212,9 @@ vUv = uv;
       new THREE.PlaneGeometry(200, 50, 200, 100),
       material
     );
+    mesh.rotation.x = -3.14/2;
+
+
     scene.add(mesh);
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -238,7 +243,7 @@ vUv = uv;
   }
 
   function render() {
-    material.uniforms['time'].value = .00025 * (Date.now() - start);
+    material.uniforms['time'].value = .000075 * (Date.now() - start);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
   }
